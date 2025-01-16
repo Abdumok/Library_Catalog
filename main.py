@@ -3,7 +3,7 @@ import time
 
 library_catalog = {}
 
-# Create welcome function
+# Create function display library service
 def library_service():
     print("1- Add a book")
     print("2- Check out")
@@ -19,7 +19,7 @@ def clear():
 def add():
     while True:
         print("------------------------------------------------------------")
-        isba = input("Please enter the ISBA for the book you want to add: ")
+        isba = input("Please enter the 'ISBA' for the book you want to add: ")
         if not isba.isdigit():
             print("\nInvalid input, That is not a number, Enter a valid number")
         elif isba in library_catalog:
@@ -29,6 +29,10 @@ def add():
     title = input("Enter the book's title name: ")
     author = input("Enter th book's author name: ")
     library_catalog[isba] = {"title": title, "author": author, "available": True }
+    print("\n--------------------------------------------------------------------------")
+    print(f"Book: ({library_catalog[isba]['title']}), By ({library_catalog[isba]['author']}) was added successfully with"
+          f" ISBA: ({isba})")
+    print("--------------------------------------------------------------------------\n")
     if input("Do you want to add another book? (Y/N) ").lower() == "y":
         add()
 
@@ -38,12 +42,16 @@ def check_out():
     if check_out_isba in library_catalog:
         if library_catalog[check_out_isba]["available"]:
             library_catalog[check_out_isba]["available"] = False
-            print(f"Book ({library_catalog[check_out_isba]["title"]}) By ({library_catalog[check_out_isba]["author"]})"
-                  f" checked out successfully.")
+            print("\n---------------------------------------------------------------")
+            print(f"Book: ({library_catalog[check_out_isba]['title']}), By: ({library_catalog[check_out_isba]['author']})"
+                  f", checked out successfully.")
+            print("---------------------------------------------------------------\n")
         else:
-            print(f"Sorry this book you ordered is already checked out")
+            print(f"\nSorry this book you ordered is already checked out")
+            print("-------------------------------------------------------")
     else:
-        print("Sorry we don't have this book in our library catalog.")
+        print("\nSorry we don't have this book in our library catalog.")
+        print("--------------------------------------------------------")
     if input("Do you want to check out another book. (Y/N) ").lower() == "y":
         check_out()
     else:
@@ -51,15 +59,38 @@ def check_out():
 
 # Create check in function
 def check_in():
-    pass
+    check_in_isba = input("Enter the ISBA for the book you want to check in: ")
+    if check_in_isba in library_catalog:
+        if not library_catalog[check_in_isba]["available"]:
+            print("\n---------------------------------------------------------------")
+            print(f"Book: ({library_catalog[check_in_isba]['title']}), By: ({library_catalog[check_in_isba]['author']})"
+                  f" is checked in successfully")
+            print("---------------------------------------------------------------\n")
+        else:
+            print("\nThe book is already checked in.")
+            print("---------------------------------")
+    else:
+        print("\nSorry the book is not in our book list.")
+        print("----------------------------------------")
+    if input("Do you want to check in another book. (Y/N) ").lower() == "y":
+        check_in()
+    else:
+        pass
 
 # Create function to display the books in the library catalog
 def list_books():
-    print("\n------------------------------------------------------")
-    for isba in library_catalog:
-        print(f"Book: {library_catalog[isba]["title"]}, By: {library_catalog[isba]["author"]},"
-              f" ISBA: {isba}, Available: {library_catalog[isba]["available"]} ")
-        print("------------------------------------------------------")
+    print("Getting books list, Please wait...")
+    time.sleep(2)
+    if len(library_catalog) == 0:
+        print("\n------------------------------------")
+        print("Sorry, The library catalog is empty.")
+        print("------------------------------------\n")
+    else:
+        print("\n------------------------------------------------------------------")
+        for isba in library_catalog:
+            print(f"Book: {library_catalog[isba]['title']}, By: {library_catalog[isba]['author']},"
+                  f" ISBA: {isba}, Available: {library_catalog[isba]['available']} ")
+            print("----------------------------------------------------------------")
 
 # Create exit function
 def exit_pro():
